@@ -86,8 +86,19 @@ public class Cliente extends Persona implements ServicioCuenta {
     public void abonarCuenta(int numero, double abono) {
         Cuenta cuenta = bucarCuentas(numero);
         if (cuenta != null) {
+            System.out.println("el nuevo saldo de la cuenta " + cuenta.getNumero() + " es =" + cuenta.abono(abono));
             cuenta.setSaldo(cuenta.abono(abono));
-            System.out.println("el nuevo saldo de la cuenta " + cuenta.getNumero() + "es =" + cuenta.abono(abono));
+            System.out.println("cuenta.getSaldo() = " + cuenta.getSaldo());
+        }
+    }
+
+    @Override
+    public void retiroCuenta(int numero, double retiro) {
+        Cuenta cuenta = bucarCuentas(numero);
+        if (cuenta != null) {
+            System.out.println("el nuevo saldo de la cuenta " + cuenta.getNumero() + "es =" + cuenta.retiro(retiro));
+            cuenta.setSaldo(cuenta.retiro(retiro));
+            System.out.println("cuenta.getSaldo() = " + cuenta.getSaldo());
         }
     }
 
