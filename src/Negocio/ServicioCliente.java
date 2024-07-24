@@ -1,6 +1,8 @@
 package Negocio;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 public interface ServicioCliente {
 
@@ -8,11 +10,12 @@ public interface ServicioCliente {
 
     boolean eliminarCliente(int numero);
 
-    Cliente consultarCliente(int numero);
+    Optional<Cliente> consultarClientePorNumero(int numero);
 
     ArrayList<Cliente> obtenerClientes();
 
-    Cliente buscarClientePorRfc(String rfc);
+    Optional<Cliente> buscarClientePorRfc(String rfc);
 
     void listarClientes ();
+    List<Cliente> ordenarClientexNumero();
 }

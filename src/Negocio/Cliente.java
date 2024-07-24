@@ -1,8 +1,12 @@
 package Negocio;
 
+import javax.swing.text.html.Option;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class Cliente extends Persona implements ServicioCuenta {
 
@@ -70,8 +74,8 @@ public class Cliente extends Persona implements ServicioCuenta {
 
     @Override
     public boolean agregarCuenta(Cuenta cuenta) {
-        Cuenta cta = bucarCuentas(cuenta.getNumero());
-        if (cta == null) {
+        Optional<Cuenta> cta = bucarCuentas(cuenta.getNumero());
+        if (cta.isEmpty()) {
             return cuentas.add(cuenta);
         }
         return false;
@@ -79,17 +83,19 @@ public class Cliente extends Persona implements ServicioCuenta {
 
     @Override
     public boolean cancelarCuenta(int numero) {
-        return false;
+        return bucarCuentas(numero).map(cuenta -> cuentas.remove(cuenta)).isPresent();
     }
 
     @Override
     public void abonarCuenta(int numero, double abono) {
-        Cuenta cuenta = bucarCuentas(numero);
-        if (cuenta != null) {
+        bucarCuentas(numero).map(cuenta -> {
             cuenta.setSaldo(cuenta.abono(abono));
-            System.out.println("el nuevo saldo de la cuenta " + cuenta.getNumero() + "es =" + cuenta.abono(abono));
-        }
+            System.out.println("el nuevo saldo de la cuenta " + cuenta.getNumero() + "es = " + cuenta.getSaldo());
+            return Optional.empty();
+        });
+
     }
+
 
     @Override
     public ArrayList<Cuenta> obtenerCuentas() {
@@ -98,18 +104,29 @@ public class Cliente extends Persona implements ServicioCuenta {
 
     @Override
     public void listarCuentas() {
-        for (Cuenta cuenta : cuentas) {
+        System.out.println("#".repeat(30));
+        cuentas.forEach(System.out::println);
+        System.out.println("#".repeat(30));
+    /*    for (Cuenta cuenta : cuentas) {
             System.out.println("cuenta = " + cuenta);
-        }
+        }*/
     }
 
     @Override
-    public Cuenta bucarCuentas(int numero) {
-        for (Cuenta cuenta : cuentas) {
+    public Optional<Cuenta> bucarCuentas(int numero) {
+
+        return cuentas.stream().filter(cta -> cta.getNumero() == numero).findFirst();
+
+        /*for (Cuenta cuenta : cuentas) {
             if (cuenta.getNumero() == numero) {
                 return cuenta;
             }
         }
-        return null;
+        return null;*/
+    }
+
+    @Override
+    public void ordenarCuentasxNumero() {
+         cuentas.stream().sorted((cuenta1, cuenta2) -> cuenta1.getNumero().compareTo(cuenta2.getNumero())).toList().forEach(System.out::println);
     }
 }

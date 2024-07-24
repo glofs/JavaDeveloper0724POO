@@ -1,6 +1,10 @@
 package Negocio;
 
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class Banco implements ServicioCliente {
     private String nombre;
@@ -70,32 +74,35 @@ public class Banco implements ServicioCliente {
 
     @Override
     public boolean agregarCliente(Cliente cliente) {
-        Cliente clt = consultarCliente(cliente.getCedula());
-        if (clt == null) {
+        Optional<Cliente> clt = consultarClientePorNumero(cliente.getCedula());
+        if (clt.isEmpty()) {
             return clientes.add(cliente);
-        } else {
-            return false;
-        }
-    }
-
-    @Override
-    public boolean eliminarCliente(int numero) {
-
-        Cliente client = consultarCliente(numero);
-        if (client != null) {
-            return clientes.remove(client);
         }
         return false;
     }
 
     @Override
-    public Cliente consultarCliente(int numero) {
-        for (Cliente cliente : clientes) {
+    public boolean eliminarCliente(int numero) {
+
+        return consultarClientePorNumero(numero).map(cliente -> clientes.remove(cliente)).orElse(false);
+    /*    if (client.isPresent()) {
+            return clientes.remove(client);
+        }
+        return false;
+    */
+    }
+
+    @Override
+    public Optional<Cliente> consultarClientePorNumero(int numero) {
+
+        return clientes.stream().filter(cliente -> cliente.getCedula() == numero).findFirst();
+      /*  for (Cliente cliente : clientes) {
             if (cliente.getCedula() == numero) {
                 return cliente;
             }
         }
         return null;
+      */
     }
 
     @Override
@@ -104,21 +111,30 @@ public class Banco implements ServicioCliente {
     }
 
     @Override
-    public Cliente buscarClientePorRfc(String rfc) {
-        for (Cliente cliente : clientes) {
+    public Optional<Cliente> buscarClientePorRfc(String rfc) {
+
+        return clientes.stream().filter(cliente -> cliente.getRfc().equals(rfc)).findFirst();
+     /*   for (Cliente cliente : clientes) {
             if (cliente.getRfc() == rfc) {
                 return cliente;
             }
         }
-        return null;
+        return null;*/
     }
 
     @Override
     public void listarClientes() {
         System.out.println("#".repeat(30));
-        for (Cliente clt : clientes) {
+        clientes.forEach(System.out::println);
+      /*  for (Cliente clt : clientes) {
             System.out.println("clt = " + clt);
-        }
+        }*/
         System.out.println("#".repeat(30));
+    }
+
+    @Override
+    public List<Cliente> ordenarClientexNumero() {
+       return clientes.stream().sorted((client,client2)-> client.getCedula().compareTo(client2.getCedula())).collect(Collectors.toList());
+
     }
 }

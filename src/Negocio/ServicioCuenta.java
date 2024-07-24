@@ -1,6 +1,8 @@
 package Negocio;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 public interface ServicioCuenta {
     boolean agregarCuenta(Cuenta cuenta);
@@ -12,5 +14,6 @@ public interface ServicioCuenta {
     ArrayList<Cuenta> obtenerCuentas();
 
     void listarCuentas();
-    Cuenta bucarCuentas(int numero);
+    Optional<Cuenta> bucarCuentas(int numero);
+    void ordenarCuentasxNumero();
 }
