@@ -10,7 +10,8 @@ public interface ServicioCuenta {
     boolean cancelarCuenta(int numero);
 
     void abonarCuenta(int numero, double abono);
-
+    void retiroCuenta(int numero, double abono)
+;
     ArrayList<Cuenta> obtenerCuentas();
 
     void listarCuentas();

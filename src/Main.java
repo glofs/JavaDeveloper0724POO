@@ -28,9 +28,9 @@ public class Main {
         banco.eliminarCliente(1234567);
         banco.listarClientes();
 
-        CuentaDeAhorro cuentaDeAhorro = new CuentaDeAhorro(274001100, LocalDateTime.now().minusHours(2), 1000d, null, 0.5);
-        CuentaDeAhorro cuentaDeAhorro2 = new CuentaDeAhorro(777901211, LocalDateTime.now().minusHours(1), 1000d, null, 0.5);
-        CuentaDeCheque cuentaDeAhorro3 = new CuentaDeCheque(274001102, LocalDateTime.now().minusMinutes(30), 1000d, null, 0.5);
+        CuentaDeAhorro cuentaDeAhorro = new CuentaDeAhorro(274001100, LocalDateTime.now().minusHours(2), 1000.0, null, 0.5);
+        CuentaDeAhorro cuentaDeAhorro2 = new CuentaDeAhorro(777901211, LocalDateTime.now().minusHours(1), 1000.0, null, 0.5);
+        CuentaDeCheque cuentaDeAhorro3 = new CuentaDeCheque(274001102, LocalDateTime.now().minusMinutes(30), 1000.0, null, 0.5);
 
         cliente.agregarCuenta(cuentaDeAhorro);
         cliente.agregarCuenta(cuentaDeAhorro2);
@@ -39,6 +39,7 @@ public class Main {
         cliente.abonarCuenta(274001100, 1000.0);
         cliente.abonarCuenta(274001102, 5000.0);
         cliente.cancelarCuenta(777901211);
+        cliente.retiroCuenta(274001100,500);
         cliente.listarCuentas();
         banco.ordenarClientexNumero().forEach(System.out::println);
         cliente.ordenarCuentasxNumero();

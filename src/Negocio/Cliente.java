@@ -1,12 +1,9 @@
 package Negocio;
 
-import javax.swing.text.html.Option;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class Cliente extends Persona implements ServicioCuenta {
 
@@ -94,6 +91,18 @@ public class Cliente extends Persona implements ServicioCuenta {
             return Optional.empty();
         });
 
+
+    }
+
+    @Override
+    public void retiroCuenta(int numero, double retiro) {
+        bucarCuentas(numero).map(cta -> {
+            cta.setSaldo(cta.retiro(retiro));
+            System.out.println("el nuevo saldo de la cuenta " + cta.getNumero() + "es = " + cta.getSaldo());
+            return Optional.empty();
+        });
+
+
     }
 
 
@@ -127,6 +136,8 @@ public class Cliente extends Persona implements ServicioCuenta {
 
     @Override
     public void ordenarCuentasxNumero() {
-         cuentas.stream().sorted((cuenta1, cuenta2) -> cuenta1.getNumero().compareTo(cuenta2.getNumero())).toList().forEach(System.out::println);
+        System.out.println("#".repeat(30));
+        cuentas.stream().sorted((cuenta1, cuenta2) -> cuenta1.getNumero().compareTo(cuenta2.getNumero())).toList().forEach(System.out::println);
+        System.out.println("#".repeat(30));
     }
 }
