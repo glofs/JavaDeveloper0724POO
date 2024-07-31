@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 //funcionan como anotaciones para recordar que cada clase que herede debe implementarla
 //las interfaces son clases abstractas puras
-abstract class Cuenta {
+public abstract class Cuenta {
 
     private Integer numero;
     private LocalDateTime fechaApertura;
@@ -15,6 +15,22 @@ abstract class Cuenta {
         this.numero = numero;
         this.fechaApertura = fechaApertura;
         this.saldo = saldo;
+        this.fechaCancelacion = fechaCancelacion;
+    }
+
+    public LocalDateTime getFechaApertura() {
+        return fechaApertura;
+    }
+
+    public void setFechaApertura(LocalDateTime fechaApertura) {
+        this.fechaApertura = fechaApertura;
+    }
+
+    public LocalDateTime getFechaCancelacion() {
+        return fechaCancelacion;
+    }
+
+    public void setFechaCancelacion(LocalDateTime fechaCancelacion) {
         this.fechaCancelacion = fechaCancelacion;
     }
 

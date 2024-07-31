@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Optional;
 
-public class Cliente extends Persona implements ServicioCuenta {
+public class Cliente extends Persona /*implements ServicioCuenta*/ {
 
 
     private Integer cedula;
@@ -69,7 +69,7 @@ public class Cliente extends Persona implements ServicioCuenta {
                 '}';
     }
 
-    @Override
+/*    @Override
     public boolean agregarCuenta(Cuenta cuenta) {
         Optional<Cuenta> cta = bucarCuentas(cuenta.getNumero());
         if (cta.isEmpty()) {
@@ -116,9 +116,9 @@ public class Cliente extends Persona implements ServicioCuenta {
         System.out.println("#".repeat(30));
         cuentas.forEach(System.out::println);
         System.out.println("#".repeat(30));
-    /*    for (Cuenta cuenta : cuentas) {
+    *//*    for (Cuenta cuenta : cuentas) {
             System.out.println("cuenta = " + cuenta);
-        }*/
+        }*//*
     }
 
     @Override
@@ -126,12 +126,12 @@ public class Cliente extends Persona implements ServicioCuenta {
 
         return cuentas.stream().filter(cta -> cta.getNumero() == numero).findFirst();
 
-        /*for (Cuenta cuenta : cuentas) {
+        *//*for (Cuenta cuenta : cuentas) {
             if (cuenta.getNumero() == numero) {
                 return cuenta;
             }
         }
-        return null;*/
+        return null;*//*
     }
 
     @Override
@@ -139,5 +139,5 @@ public class Cliente extends Persona implements ServicioCuenta {
         System.out.println("#".repeat(30));
         cuentas.stream().sorted((cuenta1, cuenta2) -> cuenta1.getNumero().compareTo(cuenta2.getNumero())).toList().forEach(System.out::println);
         System.out.println("#".repeat(30));
-    }
+    }*/
 }

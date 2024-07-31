@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class Banco implements ServicioCliente {
+public class Banco /*implements ServicioCliente*/ {
     private String nombre;
     private Domicilio domicilio;
     private String rfc;
@@ -71,7 +71,7 @@ public class Banco implements ServicioCliente {
                 '}';
     }
 
-    @Override
+    /*@Override
     public boolean agregarCliente(Cliente cliente) {
         Optional<Cliente> clt = consultarClientePorNumero(cliente.getCedula());
         if (clt.isEmpty()) {
@@ -84,24 +84,24 @@ public class Banco implements ServicioCliente {
     public boolean eliminarCliente(int numero) {
 
         return consultarClientePorNumero(numero).map(cliente -> clientes.remove(cliente)).orElse(false);
-    /*    if (client.isPresent()) {
+    *//*    if (client.isPresent()) {
             return clientes.remove(client);
         }
         return false;
-    */
+    *//*
     }
 
     @Override
     public Optional<Cliente> consultarClientePorNumero(int numero) {
 
         return clientes.stream().filter(cliente -> cliente.getCedula() == numero).findFirst();
-      /*  for (Cliente cliente : clientes) {
+      *//*  for (Cliente cliente : clientes) {
             if (cliente.getCedula() == numero) {
                 return cliente;
             }
         }
         return null;
-      */
+      *//*
     }
 
     @Override
@@ -113,21 +113,21 @@ public class Banco implements ServicioCliente {
     public Optional<Cliente> buscarClientePorRfc(String rfc) {
 
         return clientes.stream().filter(cliente -> cliente.getRfc().equals(rfc)).findFirst();
-     /*   for (Cliente cliente : clientes) {
+     *//*   for (Cliente cliente : clientes) {
             if (cliente.getRfc() == rfc) {
                 return cliente;
             }
         }
-        return null;*/
+        return null;*//*
     }
 
     @Override
     public void listarClientes() {
         System.out.println("#".repeat(30));
         clientes.forEach(System.out::println);
-      /*  for (Cliente clt : clientes) {
+      *//*  for (Cliente clt : clientes) {
             System.out.println("clt = " + clt);
-        }*/
+        }*//*
         System.out.println("#".repeat(30));
     }
 
@@ -135,5 +135,5 @@ public class Banco implements ServicioCliente {
     public List<Cliente> ordenarClientexNumero() {
        return clientes.stream().sorted((client,client2)-> client.getCedula().compareTo(client2.getCedula())).collect(Collectors.toList());
 
-    }
+    }*/
 }
