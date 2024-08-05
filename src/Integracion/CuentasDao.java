@@ -4,7 +4,8 @@ import Negocio.Cuenta;
 import Negocio.CuentaDeAhorro;
 import Negocio.ServicioCuenta;
 
-import java.sql.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -12,55 +13,16 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class CuentasDao implements ServicioCuenta {
-    private String url;
-    private String user;
-    private String password;
+public class CuentasDao extends ConectionDao implements ServicioCuenta {
     private String query;
-    private Connection connection;
-    private Statement statement;
     private ResultSet resultSet;
     private ArrayList<Cuenta> cuentas;
 
-
     public CuentasDao(String url, String user, String password) {
-        this.url = url;
-        this.user = user;
-        this.password = password;
+        super(url, user, password);
         this.cuentas = new ArrayList<>();
-        try {
-            connection = DriverManager.getConnection(getUrl(), getUser(), getPassword());
-            statement = connection.createStatement();
-        } catch (
-                SQLException e) {
-            System.out.println("FALLO CONEXIÓN DB " + e.getMessage());
-        }
-
     }
 
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public String getUser() {
-        return user;
-    }
-
-    public void setUser(String user) {
-        this.user = user;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
     public String getQuery() {
         return query;
@@ -70,21 +32,6 @@ public class CuentasDao implements ServicioCuenta {
         this.query = query;
     }
 
-    public Connection getConnection() {
-        return connection;
-    }
-
-    public void setConnection(Connection connection) {
-        this.connection = connection;
-    }
-
-    public Statement getStatement() {
-        return statement;
-    }
-
-    public void setStatement(Statement statement) {
-        this.statement = statement;
-    }
 
     public ResultSet getResultSet() {
         return resultSet;
@@ -103,7 +50,7 @@ public class CuentasDao implements ServicioCuenta {
         query = "INSERT INTO CUENTAS(numero,saldo,fecha_apertura) VALUES(" + cuenta.getNumero() + "," + cuenta.getSaldo() + ",'" + cuenta.getFechaApertura().format(timestampw) + "');";
         System.out.println("query = " + query);
         try {
-            afectados = statement.executeUpdate(query);
+            afectados = this.getStatement().executeUpdate(query);
             if (afectados == 1) {
                 System.out.println("Se insertó la  cuenta en la DB");
                 return true;
@@ -124,7 +71,7 @@ public class CuentasDao implements ServicioCuenta {
         int afectados = 0;
         query = "DELETE FROM CUENTAS WHERE NUMERO=" + numero;
         try {
-            afectados = statement.executeUpdate(query);
+            afectados = this.getStatement().executeUpdate(query);
             if (afectados == 1) {
                 System.out.println("Se borró la  cuenta en la DB");
                 return true;
@@ -155,9 +102,9 @@ public class CuentasDao implements ServicioCuenta {
 
         query = "SELECT * FROM CUENTAS";
         try {
-            resultSet = statement.executeQuery(getQuery());
+            resultSet = this.getStatement().executeQuery(getQuery());
             while (resultSet.next()) {
-                Cuenta cuenta = new CuentaDeAhorro(resultSet.getInt("numero"), resultSet.getTimestamp("fecha_apertura").toLocalDateTime(), resultSet.getDouble("saldo"),null,1);
+                Cuenta cuenta = new CuentaDeAhorro(resultSet.getInt("numero"), resultSet.getTimestamp("fecha_apertura").toLocalDateTime(), resultSet.getDouble("saldo"), null, 1);
                 cuentas.add(cuenta);
             }
             resultSet.close();
@@ -171,7 +118,7 @@ public class CuentasDao implements ServicioCuenta {
     public void listarCuentas() {
         query = "SELECT * FROM CUENTAS";
         try {
-            resultSet = statement.executeQuery(getQuery());
+            resultSet = this.getStatement().executeQuery(getQuery());
             System.out.println("Datos de la Cuentas");
             System.out.println("Fecha " + LocalDateTime.now());
             System.out.println("*-".repeat(20));
@@ -187,7 +134,6 @@ public class CuentasDao implements ServicioCuenta {
         } catch (SQLException e) {
             System.out.println("Fallo listado de cuentas " + e.getMessage());
         }
-        return;
 
     }
 
@@ -198,7 +144,7 @@ public class CuentasDao implements ServicioCuenta {
 
     @Override
     public List<Cuenta> ordenarCuentasxNumero() {
-       return obtenerCuentas().stream().sorted((cuenta1,cuenta2)->cuenta1.getNumero().compareTo(cuenta2.getNumero())).collect(Collectors.toList());
+        return obtenerCuentas().stream().sorted((cuenta1, cuenta2) -> cuenta1.getNumero().compareTo(cuenta2.getNumero())).collect(Collectors.toList());
 
     }
 }

@@ -52,7 +52,7 @@ public class Main {
         String password = "admin";
 
 
-        ClientesDao clientesDao = new ClientesDao(url, user, password);
+        ClientesDao clientesDao = new ClientesDao(url,user,password);
         clientesDao.listarClientes();
         clientesDao.consultarClientePorNumero(3425);
         clientesDao.eliminarCliente(1234);
