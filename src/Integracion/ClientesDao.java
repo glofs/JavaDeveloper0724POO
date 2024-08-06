@@ -46,42 +46,26 @@ public class ClientesDao extends ConectionDao implements ServicioCliente {
 
     @Override
     public boolean agregarCliente(Cliente cliente) {
-        int afectados = 0;
         query = "INSERT INTO CLIENTES(numero,nombre,apellido,edad) VALUES(" + cliente.getCedula() + ",'" + cliente.getNombre() + "','" + cliente.getApellido() + "'," + cliente.getEdad() + ");";
-        try {
-            afectados = this.getStatement().executeUpdate(query);
-            if (afectados == 1) {
-                System.out.println("Se insertó el cliente en la DB");
-                return true;
-            } else {
-                System.out.println("No se insertó el cliente en la DB");
-                return false;
-            }
-        } catch (SQLException e) {
-            System.out.println("Fallo la actualización " + e.getMessage());
+        if (executeOtherQuery(query)) {
+            logger.info("Actualización exitosa");
+            return true;
+        } else {
+            logger.info("Actualización fallida");
+            return false;
         }
-
-        return false;
     }
 
     @Override
     public boolean eliminarCliente(int numero) {
-        int afectados = 0;
         query = "DELETE FROM CLIENTES WHERE NUMERO=" + numero;
-        try {
-            afectados = this.getStatement().executeUpdate(query);
-            if (afectados == 1) {
-                System.out.println("Se borró el cliente en la DB");
-                return true;
-            } else {
-                System.out.println("No se encontró el cliente en la DB");
-                return false;
-            }
-        } catch (SQLException e) {
-            System.out.println("Fallo la conexión para el borrado de datos " + e.getMessage());
+        if (executeOtherQuery(query)) {
+            logger.info("Borrado exitoso");
+            return true;
+        } else {
+            logger.info("Borrado fallido");
+            return false;
         }
-
-        return false;
     }
 
     @Override
@@ -114,9 +98,7 @@ public class ClientesDao extends ConectionDao implements ServicioCliente {
         if (!clienteArrayList.isEmpty()) {
             logger.info("Reporte de Clientes");
             logger.log(Level.INFO, "Fecha y Hora {0}", LocalDateTime.now());
-            clienteArrayList.forEach(cliente -> {
-                logger.info(cliente.getNombre() + " " + cliente.getApellido() + " " + cliente.getCedula());
-            });
+            clienteArrayList.forEach(cliente -> logger.info(cliente.getNombre() + " " + cliente.getApellido() + " " + cliente.getCedula()));
         } else {
             logger.info("Cliente no encontrado");
         }
@@ -142,6 +124,19 @@ public class ClientesDao extends ConectionDao implements ServicioCliente {
     }
 
     public boolean executeOtherQuery(String query) {
+        int afectados = 0;
+        try {
+            afectados = this.getStatement().executeUpdate(query);
+            if (afectados == 1) {
+                logger.log(Level.INFO, "{0} Registros actualizados", afectados);
+                return true;
+            } else {
+                logger.log(Level.INFO, "{0} Registros actualizados", afectados);
+                return false;
+            }
+        } catch (SQLException e) {
+            logger.info("Fallo la actualización " + e.getMessage());
+        }
         return false;
     }
 }
